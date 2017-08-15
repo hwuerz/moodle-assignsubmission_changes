@@ -38,6 +38,9 @@ class assign_submission_changes_changelog {
     /**
      * Provides an update detector for the passed submission file data.
      * Wrapper around changeloglib plugin to be used for submissions.
+     * @param stored_file $file The file of which a predecessor should be found.
+     * @param int $user_id The user ID whoes submissions should be checked.
+     * @param int $context_id The context of the submission
      * @return local_changeloglib_update_detector The update detector
      */
     public static function get_update_detector($file, $user_id, $context_id) {
@@ -54,7 +57,9 @@ class assign_submission_changes_changelog {
     /**
      * Creates a backup of the passed course module.
      * Wrapper around changeloglib plugin to be used for course modules.
-     * @param stdClass $coursemodule The course module of which a backup should created.
+     * @param stdClass $submission The submission which should be backuped. Must contain id and userid.
+     * @param stdClass $context The context of this submission. Must contain an ID.
+     *                          Under this context the file will be taken and stored.
      */
     public static function backup_submission($submission, $context) {
 

@@ -27,9 +27,10 @@ defined('MOODLE_INTERNAL') || die;
 
 global $CFG;
 
+
 $plugin->component = 'assignsubmission_changes';
 
-// require the backup and compare libs
+// Require the backup and compare libs
 $plugin->dependencies = array(
     'local_changeloglib' => 2017081400,
 );

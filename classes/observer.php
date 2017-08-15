@@ -47,7 +47,7 @@ class assign_submission_changes_observer {
             false);
 
         // Iterate all files. A submission can have multiple uploads.
-        foreach($area_files as $file) {
+        foreach ($area_files as $file) {
             $update_detector = assign_submission_changes_changelog::get_update_detector($file, $event->userid, $event->contextid);
             $predecessor = $update_detector->is_update();
             if ($predecessor) {
@@ -56,8 +56,6 @@ class assign_submission_changes_observer {
 
             }
         }
-
-
     }
 
 }
