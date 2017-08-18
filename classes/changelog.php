@@ -78,12 +78,12 @@ class assign_submission_changes_changelog {
             $context_id_to, $scope_id);
     }
 
-//    public static function is_changelog_enabled() {
-//        require_once(dirname(__FILE__) . '/../../changeloglib/classes/pdftotext.php');
+    public static function is_changelog_enabled() {
+        return true;
 //        return get_config(LOCAL_UPLOADNOTIFICATION_FULL_NAME, 'changelog_enabled')
 //            && get_config(LOCAL_UPLOADNOTIFICATION_FULL_NAME, 'diff_enabled')
 //            && local_changeloglib_pdftotext::is_installed();
-//    }
+    }
 
 //
 //    /**

@@ -30,9 +30,10 @@ require_once(dirname(__FILE__) . '/changelog.php');
 
 class assign_submission_changes_observer {
 
-    public static function submission_updated($event) {
+    public static function submission_updated(\core\event\base $event) {
         global $DB;
 
+        $user_id = $event->relateduserid;
         $context_id = $event->contextid;
         $submission_id = $event->other['submissionid'];
 
@@ -48,10 +49,38 @@ class assign_submission_changes_observer {
 
         // Iterate all files. A submission can have multiple uploads.
         foreach ($area_files as $file) {
-            $update_detector = assign_submission_changes_changelog::get_update_detector($file, $event->userid, $event->contextid);
+            $update_detector = assign_submission_changes_changelog::get_update_detector($file, $user_id, $context_id);
             $predecessor = $update_detector->is_update();
             if ($predecessor) {
 
+                $diff_output = $file->get_filename() . ' is an update of ' . $predecessor->get_filename();
+
+                if (assign_submission_changes_changelog::is_changelog_enabled()) {
+                    $predecessor_txt_file = local_changeloglib_pdftotext::convert_to_txt($predecessor);
+                    $file_txt_file = local_changeloglib_pdftotext::convert_to_txt($file);
+
+                    // Only continue of valid text files could be generated.
+                    if ($predecessor_txt_file !== false && $file_txt_file !== false) {
+                        $diff_detector = new local_changeloglib_diff_detector($predecessor_txt_file, $file_txt_file);
+
+                        // TODO Abort output if to many changes
+
+//                        $diff_output .= get_string('printed_diff_prefix', LOCAL_UPLOADNOTIFICATION_FULL_NAME);
+                        $diff_output .= ' Geandert wurde Seite ';
+                        $diff_output .= $diff_detector->get_info();
+                    }
+
+                    // Delete auto generated text files
+                    unlink($predecessor_txt_file);
+                    unlink($file_txt_file);
+                }
+
+                $DB->insert_record('assignsubmission_changes', (object) array(
+                    'submission' => $submission_id,
+                    'author' => $event->userid,
+                    'changes' => $diff_output,
+                    'timestamp' => time()
+                ));
                 echo $file->get_filename() . ' is an update of ' . $predecessor->get_filename();
 
             }

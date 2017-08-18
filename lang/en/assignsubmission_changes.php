@@ -30,5 +30,16 @@ $string['pluginname'] = 'AssignSubmission Changes';
 $string['pluginname_help'] = 'AssignSubmission Changes';
 $string['pluginname_link'] = 'https://github.com/hwuerz/moodle-assignsubmission_changes';
 $string['pluginname_desc'] = 'AssignSubmission Changes';
+
 $string['enabled'] = 'AssignSubmission Changes';
 $string['enabled_help'] = 'If enabled, a changelog for PDF submissions will be generated. Only compatible with file submissions';
+
+$string['updates'] = 'Detect updates';
+$string['updates_help'] = 'Detect updates of student submissions.';
+
+$string['last_grading'] = 'The last grading was on ';
+$string['no_last_grading'] = 'There is no grading until now.';
+$string['new_changes_prefix'] = 'The following changes were performed by the user after the last grading';
+$string['no_new_changes'] = 'There are no changes of the submission after the last grading';
+$string['old_changes_prefix'] = 'The following changes were performed by the user before the last grading';
+$string['no_old_changes'] = 'The student has not submitted any uploads before the last grading';

@@ -25,21 +25,9 @@
 
 defined('MOODLE_INTERNAL') || die;
 
-global $CFG;
+function xmldb_assignsubmission_changes_upgrade($oldversion) {
+
+    return true;
+}
 
 
-$plugin->component = 'assignsubmission_changes';
-
-// Require the backup and compare libs
-$plugin->dependencies = array(
-    'local_changeloglib' => 2017081400,
-);
-
-
-$plugin->release = '0.2.0';
-$plugin->maturity = MATURITY_ALPHA;
-$plugin->cron = 1;
-
-// Version format:  YYYYMMDDXX
-$plugin->version = 2017081413;
-$plugin->requires = 2013111800;
