@@ -84,8 +84,18 @@ class assign_submission_changes extends assign_submission_plugin
      */
     public function view_summary(stdClass $submission, & $showviewlink) {
         $showviewlink = true; // Generates a link to the view page
-        return "Das ist view summary";
-        // TODO Output whether there are changes after the last grading
+
+        $grading = $this->get_last_grading($submission->assignment, $submission->userid);
+
+        // If there are no submissions -> no content will be displayed
+        // If there is a submission, but no grading --> content will be displayed
+        if ($submission->timemodified > $grading->timemodified) {
+            return '<span style="background-color: yellow;">'
+                . get_string('ungraded_changes', ASSIGNSUBMISSION_CHANGES_NAME)
+                . '</span>';
+        }
+
+        return get_string('no_ungraded_changes', ASSIGNSUBMISSION_CHANGES_NAME);
     }
 
     /**
@@ -157,7 +167,7 @@ class assign_submission_changes extends assign_submission_plugin
             'userid' => $user_id
         ));
 
-        if ($record->grade < 0 || $record === false) {
+        if ($record === false || $record->grade < 0) {
             return (object) array(
                 'id' => -1,
                 'assignment' => $assignment,

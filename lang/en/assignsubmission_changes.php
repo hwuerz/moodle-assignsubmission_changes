@@ -43,3 +43,5 @@ $string['new_changes_prefix'] = 'The following changes were performed by the use
 $string['no_new_changes'] = 'There are no changes of the submission after the last grading';
 $string['old_changes_prefix'] = 'The following changes were performed by the user before the last grading';
 $string['no_old_changes'] = 'The student has not submitted any uploads before the last grading';
+$string['ungraded_changes'] = 'There are ungraded changed';
+$string['no_ungraded_changes'] = 'No ungraded changed';
