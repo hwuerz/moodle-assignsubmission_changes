@@ -71,8 +71,12 @@ class assign_submission_changes_observer {
                     }
 
                     // Delete auto generated text files
-                    unlink($predecessor_txt_file);
-                    unlink($file_txt_file);
+                    if ($predecessor_txt_file) {
+                        unlink($predecessor_txt_file);
+                    }
+                    if ($file_txt_file) {
+                        unlink($file_txt_file);
+                    }
                 }
 
                 $DB->insert_record('assignsubmission_changes', (object) array(

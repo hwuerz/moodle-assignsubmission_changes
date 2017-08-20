@@ -51,7 +51,10 @@ class assign_submission_changes_changelog {
         $scope = $user_id;
         $further_candidates = array();
 
-        return new local_changeloglib_update_detector($new_file, $new_data, $context, $scope, $further_candidates);
+        $detector = new local_changeloglib_update_detector($new_file, $new_data, $context, $scope, $further_candidates);
+        $detector->set_ensure_mime_type(false);
+
+        return $detector;
     }
 
     /**
