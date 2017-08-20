@@ -83,19 +83,41 @@ class assign_submission_changes extends assign_submission_plugin
      * @return string
      */
     public function view_summary(stdClass $submission, & $showviewlink) {
-        $showviewlink = true; // Generates a link to the view page
 
-        $grading = $this->get_last_grading($submission->assignment, $submission->userid);
+        // Check whether the current user views the grades (no student)
+        if ($this->assignment->can_view_grades()) {
 
-        // If there are no submissions -> no content will be displayed
-        // If there is a submission, but no grading --> content will be displayed
-        if ($submission->timemodified > $grading->timemodified) {
-            return '<span style="background-color: yellow;">'
-                . get_string('ungraded_changes', ASSIGNSUBMISSION_CHANGES_NAME)
-                . '</span>';
+            $showviewlink = true; // Generates a link to the view page
+
+            $grading = $this->get_last_grading($submission->assignment, $submission->userid);
+
+            // If there are no submissions -> no content will be displayed
+            // If there is a submission, but no grading --> content will be displayed
+            if ($submission->timemodified > $grading->timemodified) {
+                return '<span style="background-color: yellow;">'
+                    . get_string('ungraded_changes', ASSIGNSUBMISSION_CHANGES_NAME)
+                    . '</span>';
+            }
+
+            return get_string('no_ungraded_changes', ASSIGNSUBMISSION_CHANGES_NAME);
+
+        } else {  // User is a student and submits / views his solution
+
+            $changes = $this->get_changes($submission->id, $submission->userid);
+
+            // Print all new changes
+            if (empty($changes)) {
+                return get_string('no_changes', ASSIGNSUBMISSION_CHANGES_NAME);
+            } else {
+                $showviewlink = count($changes) > 1; // Only show more link if there is more.
+                return '<ul>'
+                    . $this->map_change_to_string($changes[0])
+                    . '</ul>';
+            }
+
         }
 
-        return get_string('no_ungraded_changes', ASSIGNSUBMISSION_CHANGES_NAME);
+
     }
 
     /**
@@ -105,6 +127,15 @@ class assign_submission_changes extends assign_submission_plugin
      * @return string The HTML text to be printed
      */
     public function view(stdClass $submission) {
+        // Check whether the current user views the grades (no student)
+        if ($this->assignment->can_view_grades()) {
+            return $this->get_full_grading_changelog_history($submission);
+        } else { // User is a student and submits / views his solution
+            return $this->get_changelog_history($submission);
+        }
+    }
+
+    private function get_full_grading_changelog_history(stdClass $submission) {
         $output = '';
 
         // Get the last grading
@@ -150,6 +181,19 @@ class assign_submission_changes extends assign_submission_plugin
         }
 
         return $output;
+    }
+
+    private function get_changelog_history(stdClass $submission) {
+        $changes = $this->get_changes($submission->id, $submission->userid);
+
+        // Print all changes
+        if (empty($changes)) {
+            return get_string('no_changes', ASSIGNSUBMISSION_CHANGES_NAME);
+        } else {
+            return '<ul>'
+                . implode('', array_map(array($this, 'map_change_to_string'), $changes))
+                . '</ul>';
+        }
     }
 
     /**
@@ -246,5 +290,13 @@ class assign_submission_changes extends assign_submission_plugin
             $string = array_slice($string, 0, 1);
         }
         return $string ? implode(', ', $string) . ' ago' : 'just now';
+    }
+
+    /**
+     * This plugin does not allow to submit anything.
+     * @return boolean
+     */
+    public function allow_submissions() {
+        return false;
     }
 }
