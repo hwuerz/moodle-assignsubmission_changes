@@ -54,3 +54,7 @@ $string['old_changes_prefix'] = 'The following changes were performed by the use
 $string['no_old_changes'] = 'The student has not submitted any changes before the last grading';
 $string['ungraded_changes'] = 'There are ungraded changes';
 $string['no_ungraded_changes'] = 'No ungraded changes';
+$string['diff_prefix'] = 'The following pages of the new file were changed: ';
+$string['long_diff'] = '{$a} pages were changed';
+$string['is_an_update'] = ' is an update of ';
+$string['was_uploaded'] = ' was uploaded';

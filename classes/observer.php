@@ -80,16 +80,27 @@ class assign_submission_changes_observer {
         $predecessor = $update_detector->is_update();
         if ($predecessor) { // A valid predecessor was found
 
-            $diff_output = $file->get_filename() . ' is an update of ' . $predecessor->get_filename();
+            $changelog_entry = $file->get_filename()
+                . get_string('is_an_update', ASSIGNSUBMISSION_CHANGES_NAME)
+                . $predecessor->get_filename();
 
-            if (self::get_config($assignment, 'diff') == 1) { // Check whether the diff is enabled for this submission
-                $diff_output .= self::generate_diff($predecessor, $file);
+            // Check whether the diff is enabled for this submission
+            if (self::get_config($assignment, 'diff') == 1) {
+                $diff = self::generate_diff($predecessor, $file);
+
+                if ($diff !== false) { // After diff generation the predecessor was not rejected.
+                    $changelog_entry .= $diff;
+
+                } else { // There are to many diffs. The predecessor can not be valid.
+                    $changelog_entry = $file->get_filename()
+                        . get_string('was_uploaded', ASSIGNSUBMISSION_CHANGES_NAME);
+                }
             }
 
             $DB->insert_record('assignsubmission_changes', (object) array(
                 'submission' => $submission_id,
                 'author' => $user_id,
-                'changes' => $diff_output,
+                'changes' => $changelog_entry,
                 'timestamp' => time()
             ));
 
@@ -112,10 +123,19 @@ class assign_submission_changes_observer {
         if ($predecessor_txt_file !== false && $file_txt_file !== false) {
             $diff_detector = new local_changeloglib_diff_detector($predecessor_txt_file, $file_txt_file);
 
-            // TODO Abort output if to many changes
-
-            $diff_output .= ' Geandert wurde Seite ';
-            $diff_output .= $diff_detector->get_info();
+            if ($diff_detector->has_acceptable_amount_of_changes()) {
+                $diff = $diff_detector->get_info();
+                if (strlen($diff) > 50) {
+                    $changed_pages = count(explode(', ', $diff));
+                    $diff_output .= '<br>' . get_string('long_diff', ASSIGNSUBMISSION_CHANGES_NAME, $changed_pages);
+                } else {
+                    $diff_output .= '<br>'
+                        . get_string('diff_prefix', ASSIGNSUBMISSION_CHANGES_NAME)
+                        . $diff;
+                }
+            } else {
+                return false;
+            }
         }
 
         // Delete auto generated text files
