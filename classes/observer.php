@@ -43,13 +43,7 @@ class assign_submission_changes_observer {
         $user_id = $event->relateduserid;
         $context_id = $event->contextid;
         $submission_id = $event->other['submissionid'];
-
-        // Check whether the changelog is enabled for this submission
         $assignment = self::get_assignment($submission_id);
-        $changelog = self::get_config($assignment, 'changelog');
-        if ($changelog != 1) { // The changelog is not enabled --> Abort
-            return;
-        }
 
         // Get the submitted files. For these files a predecessor should be found.
         $fs = get_file_storage();

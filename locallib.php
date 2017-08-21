@@ -51,23 +51,11 @@ class assign_submission_changes extends assign_submission_plugin
         $allow_changelog = get_config(ASSIGNSUBMISSION_CHANGES_NAME, 'allow_changelog');
         $allow_diff = get_config(ASSIGNSUBMISSION_CHANGES_NAME, 'allow_diff');
 
-        $default_changelog = $this->get_config('changelog');
         $default_diff = $this->get_config('diff');
 
         // Fallback: No settings were defined for this submission --> use system defaults
-        if ($default_changelog === false) {
-            $default_changelog = get_config(ASSIGNSUBMISSION_CHANGES_NAME, 'changelog');
-        }
         if ($default_diff === false) {
             $default_diff = get_config(ASSIGNSUBMISSION_CHANGES_NAME, 'diff');
-        }
-
-        // Display setting Changelog
-        if ($allow_changelog) {
-            $name = get_string('changelog', ASSIGNSUBMISSION_CHANGES_NAME);
-            $mform->addElement('checkbox', 'assignsubmission_changes_changelog', $name, '', 0);
-            $mform->setDefault('assignsubmission_changes_changelog', $default_changelog);
-            $mform->addHelpButton('assignsubmission_changes_changelog', 'changelog', 'assignsubmission_changes');
         }
 
         // Display setting Diff
@@ -76,7 +64,7 @@ class assign_submission_changes extends assign_submission_plugin
             $mform->addElement('checkbox', 'assignsubmission_changes_diff', $name, '', 0);
             $mform->setDefault('assignsubmission_changes_diff', $default_diff);
             $mform->addHelpButton('assignsubmission_changes_diff', 'diff', 'assignsubmission_changes');
-            $mform->disabledIf('assignsubmission_changes_diff', 'assignsubmission_changes_changelog', 'notchecked');
+            $mform->disabledIf('assignsubmission_changes_diff', 'assignsubmission_changes_enabled', 'notchecked');
         }
     }
 
@@ -86,9 +74,6 @@ class assign_submission_changes extends assign_submission_plugin
      * @return bool Whether saving was successful. Is always true.
      */
     public function save_settings(stdClass $data) {
-        $this->set_config(
-            'changelog',
-            isset($data->assignsubmission_changes_changelog) ? $data->assignsubmission_changes_changelog : 0);
         $this->set_config(
             'diff',
             isset($data->assignsubmission_changes_diff) ? $data->assignsubmission_changes_diff : 0);
@@ -343,13 +328,11 @@ class assign_submission_changes extends assign_submission_plugin
      * @return bool
      */
     public function is_enabled() {
-        return
-            // Admin enabled the functionality it globally
-            get_config(ASSIGNSUBMISSION_CHANGES_NAME, 'allow_changelog')
+        return parent::is_enabled()
 
-            // This assignment has not deactivated the changelog.
-            // On new submissions the config will be false because no data is stored until now --> do not just use the return value.
-            && $this->get_config('changelog') !== '0';
+            // Admin enabled the functionality it globally
+            && get_config(ASSIGNSUBMISSION_CHANGES_NAME, 'allow_changelog');
+
     }
 
     /**
@@ -357,6 +340,6 @@ class assign_submission_changes extends assign_submission_plugin
      * @return bool
      */
     public function is_configurable() {
-        return false;
+        return true;
     }
 }

@@ -42,9 +42,9 @@ $settings->add(new admin_setting_configcheckbox(
     1));
 
 $settings->add(new admin_setting_configcheckbox(
-    ASSIGNSUBMISSION_CHANGES_NAME . '/changelog',
-    new lang_string('changelog', ASSIGNSUBMISSION_CHANGES_NAME),
-    new lang_string('changelog_help', ASSIGNSUBMISSION_CHANGES_NAME),
+    ASSIGNSUBMISSION_CHANGES_NAME . '/default',
+    new lang_string('default', ASSIGNSUBMISSION_CHANGES_NAME),
+    new lang_string('default_help', ASSIGNSUBMISSION_CHANGES_NAME),
     0));
 
 $settings->add(new admin_setting_configcheckbox_assignsubmission_changes_diff(
