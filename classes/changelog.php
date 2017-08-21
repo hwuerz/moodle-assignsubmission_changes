@@ -81,6 +81,16 @@ class assign_submission_changes_changelog {
             $context_id_to, $scope_id);
     }
 
+    /**
+     * Wrapper around locallib delete method be be accessed via this interface.
+     * This method will be called to delete old submissions when new files are saved.
+     * @param int $context The context of the submission.
+     * @param int $user_id The user whose backups in the above context should be deleted.
+     */
+    public static function delete_previous_backups($context, $user_id) {
+        local_changeloglib_backup_lib::clean_up_selected($context, $user_id);
+    }
+
     public static function is_changelog_enabled() {
         return true;
 //        return get_config(LOCAL_UPLOADNOTIFICATION_FULL_NAME, 'changelog_enabled')

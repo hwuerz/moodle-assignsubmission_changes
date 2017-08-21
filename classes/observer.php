@@ -57,6 +57,10 @@ class assign_submission_changes_observer {
         foreach ($area_files as $file) {
             self::generate_changelog($file, $user_id, $context_id, $assignment, $submission_id);
         }
+
+        // Delete all previous backup files.
+        // Until now only the current upload is relevant as predecessors for further uploads.
+        assign_submission_changes_changelog::delete_previous_backups($context_id, $user_id);
     }
 
     /**
