@@ -336,11 +336,11 @@ class assign_submission_changes extends assign_submission_plugin
     }
 
     /**
-     * Automatically hide the setting for the submission plugin.     *
+     * Automatically hide the setting for the submission plugin if the admin has disabled the functionality.
      * @return bool
      */
     public function is_configurable() {
-        return true;
+        return get_config(ASSIGNSUBMISSION_CHANGES_NAME, 'allow_changelog');
     }
 
     /**
