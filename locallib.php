@@ -83,10 +83,9 @@ class assign_submission_changes extends assign_submission_plugin
     /**
      * Will be called when a student saves his submission. Creates a backup of the old file to be able to detect updates.
      * @param stdClass $submission The current submission.
-     * @param stdClass $data The form data (unused)
      * @return bool Whether saving was successful. Is always true.
      */
-    public function save(stdClass $submission, stdClass $data) {
+    public function precheck_submission($submission) {
         assign_submission_changes_changelog::backup_submission($submission, $this->assignment->get_context());
         return true;
     }
