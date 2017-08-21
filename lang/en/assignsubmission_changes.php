@@ -37,8 +37,14 @@ $string['default_help'] = 'If set, the changelog will be enabled by default for 
 $string['admin_diff'] = 'Enable Difference Detection by default';
 $string['admin_diff_help'] = 'If set, the generation of the differences between the uploades will be enabled by default for all new assignments.<br>Diff generation requires the changelog generation.';
 $string['diff_requires_changelog'] = 'You must enable the changelog for the diff generation';
+$string['allow_changelog'] = 'Allow detection of changes in student submissions';
+$string['allow_changelog_help'] = 'If set, a changelog with all updates of the submission can be generated. You can set this option in the submission settings. If this option is deactivated, a changelog can not be generated.';
+$string['allow_diff'] = 'Allow detection of differences in student submissions';
+$string['allow_diff_help'] = 'If set, the changelog can contain detailed information about the changes. You can set this option in the submission settings. If this option is deactivated, a difference between files can not be generated.<br>This functionality requires the activation of the changelog.';
 
 // Assignment Settings
+$string['enabled'] = 'Changes';
+$string['enabled_help'] = 'Enable the detection of changes.';
 $string['changelog'] = 'Build Changelog';
 $string['changelog_help'] = 'Detect updates of student submissions.';
 $string['diff'] = 'Auto detect diff';

@@ -30,9 +30,21 @@ require_once(dirname(__FILE__) . '/configcheckbox_assignsubmissionchanges_diff.p
 
 
 $settings->add(new admin_setting_configcheckbox(
-    ASSIGNSUBMISSION_CHANGES_NAME . '/default',
-    new lang_string('default', ASSIGNSUBMISSION_CHANGES_NAME),
-    new lang_string('default_help', ASSIGNSUBMISSION_CHANGES_NAME),
+    ASSIGNSUBMISSION_CHANGES_NAME . '/allow_changelog',
+    new lang_string('allow_changelog', ASSIGNSUBMISSION_CHANGES_NAME),
+    new lang_string('allow_changelog_help', ASSIGNSUBMISSION_CHANGES_NAME),
+    1));
+
+$settings->add(new admin_setting_configcheckbox(
+    ASSIGNSUBMISSION_CHANGES_NAME . '/allow_diff',
+    new lang_string('allow_diff', ASSIGNSUBMISSION_CHANGES_NAME),
+    new lang_string('allow_diff_help', ASSIGNSUBMISSION_CHANGES_NAME),
+    1));
+
+$settings->add(new admin_setting_configcheckbox(
+    ASSIGNSUBMISSION_CHANGES_NAME . '/changelog',
+    new lang_string('changelog', ASSIGNSUBMISSION_CHANGES_NAME),
+    new lang_string('changelog_help', ASSIGNSUBMISSION_CHANGES_NAME),
     0));
 
 $settings->add(new admin_setting_configcheckbox_assignsubmission_changes_diff(

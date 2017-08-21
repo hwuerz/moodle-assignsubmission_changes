@@ -32,6 +32,14 @@ class assign_submission_changes_observer {
 
     public static function submission_updated(\core\event\base $event) {
 
+        // Check whether the admin has disabled the changelog.
+        // This check is required because the function might be enabled while creating the submission, but is
+        // disabled now.
+        $admin_allow_changelog = get_config(ASSIGNSUBMISSION_CHANGES_NAME, 'allow_changelog');
+        if (!$admin_allow_changelog) {
+            return;
+        }
+
         $user_id = $event->relateduserid;
         $context_id = $event->contextid;
         $submission_id = $event->other['submissionid'];
@@ -85,7 +93,8 @@ class assign_submission_changes_observer {
                 . $predecessor->get_filename();
 
             // Check whether the diff is enabled for this submission
-            if (self::get_config($assignment, 'diff') == 1) {
+            $admin_allow_diff = get_config(ASSIGNSUBMISSION_CHANGES_NAME, 'allow_diff');
+            if ($admin_allow_diff && self::get_config($assignment, 'diff') == 1) {
                 $diff = self::generate_diff($predecessor, $file);
 
                 if ($diff !== false) { // After diff generation the predecessor was not rejected.

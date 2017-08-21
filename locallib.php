@@ -48,29 +48,36 @@ class assign_submission_changes extends assign_submission_plugin
      */
     public function get_settings(MoodleQuickForm $mform) {
 
+        $allow_changelog = get_config(ASSIGNSUBMISSION_CHANGES_NAME, 'allow_changelog');
+        $allow_diff = get_config(ASSIGNSUBMISSION_CHANGES_NAME, 'allow_diff');
+
         $default_changelog = $this->get_config('changelog');
         $default_diff = $this->get_config('diff');
 
         // Fallback: No settings were defined for this submission --> use system defaults
         if ($default_changelog === false) {
-            $default_changelog = get_config(ASSIGNSUBMISSION_CHANGES_NAME, 'default');
+            $default_changelog = get_config(ASSIGNSUBMISSION_CHANGES_NAME, 'changelog');
         }
         if ($default_diff === false) {
             $default_diff = get_config(ASSIGNSUBMISSION_CHANGES_NAME, 'diff');
         }
 
         // Display setting Changelog
-        $name = get_string('changelog', ASSIGNSUBMISSION_CHANGES_NAME);
-        $mform->addElement('checkbox', 'assignsubmission_changes_changelog', $name, '', 0);
-        $mform->setDefault('assignsubmission_changes_changelog', $default_changelog);
-        $mform->addHelpButton('assignsubmission_changes_changelog', 'changelog', 'assignsubmission_changes');
+        if ($allow_changelog) {
+            $name = get_string('changelog', ASSIGNSUBMISSION_CHANGES_NAME);
+            $mform->addElement('checkbox', 'assignsubmission_changes_changelog', $name, '', 0);
+            $mform->setDefault('assignsubmission_changes_changelog', $default_changelog);
+            $mform->addHelpButton('assignsubmission_changes_changelog', 'changelog', 'assignsubmission_changes');
+        }
 
         // Display setting Diff
-        $name = get_string('diff', ASSIGNSUBMISSION_CHANGES_NAME);
-        $mform->addElement('checkbox', 'assignsubmission_changes_diff', $name, '', 0);
-        $mform->setDefault('assignsubmission_changes_diff', $default_diff);
-        $mform->addHelpButton('assignsubmission_changes_diff', 'diff', 'assignsubmission_changes');
-        $mform->disabledIf('assignsubmission_changes_diff', 'assignsubmission_changes_changelog', 'notchecked');
+        if ($allow_changelog && $allow_diff) {
+            $name = get_string('diff', ASSIGNSUBMISSION_CHANGES_NAME);
+            $mform->addElement('checkbox', 'assignsubmission_changes_diff', $name, '', 0);
+            $mform->setDefault('assignsubmission_changes_diff', $default_diff);
+            $mform->addHelpButton('assignsubmission_changes_diff', 'diff', 'assignsubmission_changes');
+            $mform->disabledIf('assignsubmission_changes_diff', 'assignsubmission_changes_changelog', 'notchecked');
+        }
     }
 
     /**
@@ -100,10 +107,10 @@ class assign_submission_changes extends assign_submission_plugin
     }
 
     /**
-     * Prints a string in the grading overview table for teachers.
-     * @param stdClass $submission
-     * @param bool $showviewlink
-     * @return string
+     * Prints a string in the grading overview table for teachers and the view of the submission for students.
+     * @param stdClass $submission The current submission.
+     * @param bool $showviewlink Whether a link to the detailed infos should be rendered.
+     * @return string The HTML code containing the summary of the changes.
      */
     public function view_summary(stdClass $submission, & $showviewlink) {
 
@@ -137,10 +144,7 @@ class assign_submission_changes extends assign_submission_plugin
                     . $this->map_change_to_string($changes[0])
                     . '</ul>';
             }
-
         }
-
-
     }
 
     /**
@@ -331,6 +335,28 @@ class assign_submission_changes extends assign_submission_plugin
      * @return boolean
      */
     public function allow_submissions() {
+        return false;
+    }
+
+    /**
+     * Automatically enable or disable this plugin based on the configuration
+     * @return bool
+     */
+    public function is_enabled() {
+        return
+            // Admin enabled the functionality it globally
+            get_config(ASSIGNSUBMISSION_CHANGES_NAME, 'allow_changelog')
+
+            // This assignment has not deactivated the changelog.
+            // On new submissions the config will be false because no data is stored until now --> do not just use the return value.
+            && $this->get_config('changelog') !== '0';
+    }
+
+    /**
+     * Automatically hide the setting for the submission plugin.     *
+     * @return bool
+     */
+    public function is_configurable() {
         return false;
     }
 }
