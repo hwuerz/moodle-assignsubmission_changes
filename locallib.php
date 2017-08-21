@@ -342,4 +342,27 @@ class assign_submission_changes extends assign_submission_plugin
     public function is_configurable() {
         return true;
     }
+
+    /**
+     * Will be called as soon as an assignment becomes deleted. Removes all stored data from the database.
+     * @return bool Whether the deletion was successful. Is always true.
+     */
+    public function delete_instance() {
+        global $DB;
+
+        // Get all submissions for this assignment
+        $submissions = $DB->get_records('assign_submission', array(
+            'assignment' => $this->assignment->get_instance()->id
+        ));
+
+        // Delete the changelog of all submissions.
+        foreach ($submissions as $submission) {
+            // Delete all created changelogs in this assignment.
+            $DB->delete_records('assignsubmission_changes', array(
+                'submission' => $submission->id
+            ));
+        }
+
+        return parent::delete_instance();
+    }
 }
