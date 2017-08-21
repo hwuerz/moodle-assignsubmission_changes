@@ -25,3 +25,18 @@
 
 defined('MOODLE_INTERNAL') || die;
 
+require_once(dirname(__FILE__) . '/definitions.php');
+require_once(dirname(__FILE__) . '/configcheckbox_assignsubmissionchanges_diff.php');
+
+
+$settings->add(new admin_setting_configcheckbox(
+    ASSIGNSUBMISSION_CHANGES_NAME . '/default',
+    new lang_string('default', ASSIGNSUBMISSION_CHANGES_NAME),
+    new lang_string('default_help', ASSIGNSUBMISSION_CHANGES_NAME),
+    0));
+
+$settings->add(new admin_setting_configcheckbox_assignsubmission_changes_diff(
+    ASSIGNSUBMISSION_CHANGES_NAME . '/diff',
+    new lang_string('admin_diff', ASSIGNSUBMISSION_CHANGES_NAME),
+    new lang_string('admin_diff_help', ASSIGNSUBMISSION_CHANGES_NAME),
+    0));

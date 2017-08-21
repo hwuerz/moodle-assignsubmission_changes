@@ -31,12 +31,20 @@ $string['pluginname_help'] = 'AssignSubmission Changes';
 $string['pluginname_link'] = 'https://github.com/hwuerz/moodle-assignsubmission_changes';
 $string['pluginname_desc'] = 'AssignSubmission Changes';
 
-$string['enabled'] = 'AssignSubmission Changes';
-$string['enabled_help'] = 'If enabled, a changelog for PDF submissions will be generated. Only compatible with file submissions';
+// Admin settings
+$string['default'] = 'Enable Changelog by default';
+$string['default_help'] = 'If set, the changelog will be enabled by default for all new assignments.';
+$string['admin_diff'] = 'Enable Difference Detection by default';
+$string['admin_diff_help'] = 'If set, the generation of the differences between the uploades will be enabled by default for all new assignments.<br>Diff generation requires the changelog generation.';
+$string['diff_requires_changelog'] = 'You must enable the changelog for the diff generation';
 
-$string['updates'] = 'Detect updates';
-$string['updates_help'] = 'Detect updates of student submissions.';
+// Assignment Settings
+$string['changelog'] = 'Build Changelog';
+$string['changelog_help'] = 'Detect updates of student submissions.';
+$string['diff'] = 'Auto detect diff';
+$string['diff_help'] = 'Detect differences in student submissions';
 
+// Outputs
 $string['last_grading'] = 'The last grading was on ';
 $string['no_last_grading'] = 'There is no grading until now.';
 $string['no_changes'] = 'There are no detected changes.';

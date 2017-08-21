@@ -47,29 +47,52 @@ class assign_submission_changes extends assign_submission_plugin
      * @param MoodleQuickForm $mform The form which is used to render the settings.
      */
     public function get_settings(MoodleQuickForm $mform) {
-        global $CFG, $COURSE;
-        $default_updates = $this->get_config('updates');
-//        $default_updates = true;
 
-        // display notification setting
-//        $name = get_string('notification', 'assignsubmission_author');
-        $name = "Detect updates";
-        $mform->addElement('checkbox', 'assignsubmission_changes_updates', $name, '', 0);
-        $mform->setDefault('assignsubmission_changes_updates', $default_updates);
-        $mform->addHelpButton('assignsubmission_changes_updates', 'updates', 'assignsubmission_changes');
-//        $mform->disabledIf('assignsubmission_changes_updates', 'assignsubmission_author_enabled', 'notchecked');
+        $default_changelog = $this->get_config('changelog');
+        $default_diff = $this->get_config('diff');
+
+        // Fallback: No settings were defined for this submission --> use system defaults
+        if ($default_changelog === false) {
+            $default_changelog = get_config(ASSIGNSUBMISSION_CHANGES_NAME, 'default');
+        }
+        if ($default_diff === false) {
+            $default_diff = get_config(ASSIGNSUBMISSION_CHANGES_NAME, 'diff');
+        }
+
+        // Display setting Changelog
+        $name = get_string('changelog', ASSIGNSUBMISSION_CHANGES_NAME);
+        $mform->addElement('checkbox', 'assignsubmission_changes_changelog', $name, '', 0);
+        $mform->setDefault('assignsubmission_changes_changelog', $default_changelog);
+        $mform->addHelpButton('assignsubmission_changes_changelog', 'changelog', 'assignsubmission_changes');
+
+        // Display setting Diff
+        $name = get_string('diff', ASSIGNSUBMISSION_CHANGES_NAME);
+        $mform->addElement('checkbox', 'assignsubmission_changes_diff', $name, '', 0);
+        $mform->setDefault('assignsubmission_changes_diff', $default_diff);
+        $mform->addHelpButton('assignsubmission_changes_diff', 'diff', 'assignsubmission_changes');
+        $mform->disabledIf('assignsubmission_changes_diff', 'assignsubmission_changes_changelog', 'notchecked');
     }
 
+    /**
+     * Handles the values of the form elements from get_settings(...)
+     * @param stdClass $data The form data
+     * @return bool Whether saving was successful. Is always true.
+     */
     public function save_settings(stdClass $data) {
-        // set config info
-        $this->set_config('updates', isset($data->assignsubmission_changes_updates) ? $data->assignsubmission_changes_updates : 0);
+        $this->set_config(
+            'changelog',
+            isset($data->assignsubmission_changes_changelog) ? $data->assignsubmission_changes_changelog : 0);
+        $this->set_config(
+            'diff',
+            isset($data->assignsubmission_changes_diff) ? $data->assignsubmission_changes_diff : 0);
         return true;
     }
 
     /**
-     * @param stdClass $submission
-     * @param stdClass $data
-     * @return bool
+     * Will be called when a student saves his submission. Creates a backup of the old file to be able to detect updates.
+     * @param stdClass $submission The current submission.
+     * @param stdClass $data The form data (unused)
+     * @return bool Whether saving was successful. Is always true.
      */
     public function save(stdClass $submission, stdClass $data) {
         assign_submission_changes_changelog::backup_submission($submission, $this->assignment->get_context());
@@ -135,6 +158,12 @@ class assign_submission_changes extends assign_submission_plugin
         }
     }
 
+    /**
+     * Generates a HTML string containing a list with all changes of the passed submission grouped by the grading.
+     * All changes before the last grading are separated from the changes after the last grading.
+     * @param stdClass $submission The submission whose changelog should be displayed.
+     * @return string The HTML string with the changes.
+     */
     private function get_full_grading_changelog_history(stdClass $submission) {
         $output = '';
 
@@ -183,6 +212,11 @@ class assign_submission_changes extends assign_submission_plugin
         return $output;
     }
 
+    /**
+     * Generates a HTML string containing a list with all changes of the passed submission.
+     * @param stdClass $submission The submission whose changelog should be displayed.
+     * @return string The HTML string containing the <ul> with changes or an string indicating that no changes exist.
+     */
     private function get_changelog_history(stdClass $submission) {
         $changes = $this->get_changes($submission->id, $submission->userid);
 
