@@ -53,6 +53,8 @@ class assign_submission_changes_changelog {
 
         $detector = new local_changeloglib_update_detector($new_file, $new_data, $context, $scope, $further_candidates);
         $detector->set_ensure_mime_type(false);
+        // Get the predecessor even if is is completely different. This is needed to have a full changelog.
+        $detector->set_min_similarity(0);
 
         return $detector;
     }
