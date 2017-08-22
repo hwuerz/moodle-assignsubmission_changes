@@ -88,7 +88,12 @@ class assign_submission_changes_observer {
 
             // Check whether the diff is enabled for this submission
             $admin_allow_diff = get_config(ASSIGNSUBMISSION_CHANGES_NAME, 'allow_diff');
-            if ($admin_allow_diff && self::get_config($assignment, 'diff') == 1) {
+            $max_filesize_for_diff = get_config(ASSIGNSUBMISSION_CHANGES_NAME, 'max_filesize');
+            if ($admin_allow_diff
+                && self::get_config($assignment, 'diff') == 1 // Diff must be enabled for this assignment
+                && $predecessor->get_filesize() <= $max_filesize_for_diff * 1024 * 1024
+                && $file->get_filesize() <= $max_filesize_for_diff * 1024 * 1024) {
+
                 $diff = self::generate_diff($predecessor, $file);
 
                 if ($diff !== false) { // After diff generation the predecessor was not rejected.

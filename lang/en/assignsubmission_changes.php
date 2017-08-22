@@ -41,6 +41,8 @@ $string['allow_changelog'] = 'Allow detection of changes in student submissions'
 $string['allow_changelog_help'] = 'If set, a changelog with all updates of the submission can be generated. You can set this option in the submission settings. If this option is deactivated, a changelog can not be generated.';
 $string['allow_diff'] = 'Allow detection of differences in student submissions';
 $string['allow_diff_help'] = 'If set, the changelog can contain detailed information about the changes. You can set this option in the submission settings. If this option is deactivated, a difference between files can not be generated.<br>This functionality requires the activation of the changelog.';
+$string['max_filesize'] = 'Max filesize in MB for diff detection';
+$string['max_filesize_help'] = 'The maximum filesize of the submission where differences to a predecessor will be detected. A higher value can impact the server response time and workload.';
 
 // Assignment Settings
 $string['enabled'] = 'Changelog';

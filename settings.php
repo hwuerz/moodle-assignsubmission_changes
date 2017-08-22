@@ -52,3 +52,9 @@ $settings->add(new admin_setting_configcheckbox_assignsubmission_changes_diff(
     new lang_string('admin_diff', ASSIGNSUBMISSION_CHANGES_NAME),
     new lang_string('admin_diff_help', ASSIGNSUBMISSION_CHANGES_NAME),
     0));
+
+$settings->add(new admin_setting_configtext(
+    ASSIGNSUBMISSION_CHANGES_NAME . '/max_filesize',
+    new lang_string('max_filesize', ASSIGNSUBMISSION_CHANGES_NAME),
+    new lang_string('max_filesize_help', ASSIGNSUBMISSION_CHANGES_NAME),
+    20, PARAM_INT));
