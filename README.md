@@ -1,7 +1,8 @@
 Assign Submission Changes Plugin for Moodle
 ===========================================
 
-This plugin provides a changelog for PDF submissions.
+This plugin provides a changelog for student submissions. You can see when a file was updated and 
+the changed pages in PDF submissions.
 
 License
 -------

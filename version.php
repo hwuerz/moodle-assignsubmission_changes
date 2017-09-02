@@ -32,7 +32,7 @@ $plugin->component = 'assignsubmission_changes';
 
 // Require the backup and compare libs
 $plugin->dependencies = array(
-    'local_changeloglib' => 2017081400,
+    'local_changeloglib' => 2017090200,
 );
 
 
@@ -41,5 +41,5 @@ $plugin->maturity = MATURITY_ALPHA;
 $plugin->cron = 1;
 
 // Version format:  YYYYMMDDXX
-$plugin->version = 2017081432;
-$plugin->requires = 2013111800;
+$plugin->version = 2017090201;
+$plugin->requires = 2017051500;
