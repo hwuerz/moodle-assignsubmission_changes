@@ -25,6 +25,7 @@ License
 Requirements
 ------------
 * Tested with Moodle 3.3+
+* Requires the plugin `local_changeloglib`
 
 Installation
 --------
