@@ -29,6 +29,7 @@ require_once(dirname(__FILE__) . '/definitions.php');
 
 /**
  * Class admin_setting_configcheckbox_diff.
+ *
  * Simple helper to add a validation around the diff generation. Should ensures that diff can only be enables by
  * default if the changelog is enabled too.
  * Works in most cases, BUT: If the user has enabled both (changelog and diff) and disables the changelog, this code
