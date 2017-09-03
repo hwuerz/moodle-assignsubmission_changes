@@ -25,6 +25,11 @@
 
 defined('MOODLE_INTERNAL') || die;
 
+/**
+ * Performs an upgrade of the used database tables if required.
+ * @param int $oldversion The currently installed version.
+ * @return bool Whether the upgrade was successful or not.
+ */
 function xmldb_assignsubmission_changes_upgrade($oldversion) {
 
     return true;

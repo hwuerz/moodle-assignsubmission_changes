@@ -31,7 +31,9 @@ require_once(dirname(__FILE__) . '/../../../../../local/changeloglib/classes/pdf
 require_once(dirname(__FILE__) . '/../../../../../local/changeloglib/classes/update_detector.php');
 
 /**
- * Wrapper to access changelog functions
+ * Wrapper to access changelog functions.
+ * @copyright (c) 2017 Hendrik Wuerz
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class assign_submission_changes_changelog {
 
@@ -40,8 +42,8 @@ class assign_submission_changes_changelog {
      * Wrapper around changeloglib plugin to be used for submissions.
      * @param stored_file $file The file of which a predecessor should be found.
      * @param int $user_id The user ID whoes submissions should be checked.
-     * @param int $context_id The context of the submission
-     * @return local_changeloglib_update_detector The update detector
+     * @param int $context_id The context of the submission.
+     * @return local_changeloglib_update_detector The update detector.
      */
     public static function get_update_detector($file, $user_id, $context_id) {
 
@@ -68,8 +70,8 @@ class assign_submission_changes_changelog {
      */
     public static function backup_submission($submission, $context) {
 
-        // Get information to access the submission and create a copy of it
-        $data = array(); // Not needed
+        // Get information to access the submission and create a copy of it.
+        $data = array(); // Not needed.
         $context_id_from = $context->id;
         $component_from = 'assignsubmission_file';
         $filearea_from = 'submission_files';

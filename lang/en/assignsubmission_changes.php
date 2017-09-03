@@ -25,13 +25,13 @@
 
 defined('MOODLE_INTERNAL') || die;
 
-// Module metadata
+// Module metadata.
 $string['pluginname'] = 'Changes';
 $string['pluginname_help'] = 'AssignSubmission Changes';
 $string['pluginname_link'] = 'https://github.com/hwuerz/moodle-assignsubmission_changes';
 $string['pluginname_desc'] = 'AssignSubmission Changes';
 
-// Admin settings
+// Admin settings.
 $string['default'] = 'Enable Changelog by default';
 $string['default_help'] = 'If set, the changelog will be enabled by default for all new assignments.';
 $string['admin_diff'] = 'Enable Difference Detection by default';
@@ -45,13 +45,13 @@ $string['max_filesize'] = 'Max filesize in MB for diff detection';
 $string['max_filesize_help'] = 'The maximum filesize of the submission where differences to a predecessor will be detected. A higher value can impact the server response time and workload.';
 $string['diff_not_available'] = '<p>The detection for changes in PDF files is not available because the package <code>poppler-utils</code> is not installed on your system. If you have enabled the setting above, ask your server admin to run <code>apt-get install poppler-utils</code> and visit this page again. This message disappears if the tool is installed correctly.</p>';
 
-// Assignment Settings
+// Assignment Settings.
 $string['enabled'] = 'Changelog';
 $string['enabled_help'] = 'Enable the detection of changes.';
 $string['diff'] = 'Auto detect diff';
 $string['diff_help'] = 'Detect differences in student submissions';
 
-// Outputs
+// Outputs.
 $string['last_grading'] = 'The last grading was on ';
 $string['no_last_grading'] = 'There is no grading until now.';
 $string['no_changes'] = 'There are no detected changes.';

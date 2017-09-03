@@ -25,11 +25,10 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-
 /**
  * Code run after the module database tables have been created.
- * Moves the plugin to the top
- * @return bool
+ * Moves the plugin to the top.
+ * @return bool Whether the installation was successful or not.
  */
 function xmldb_assignsubmission_changes_install() {
     global $CFG;

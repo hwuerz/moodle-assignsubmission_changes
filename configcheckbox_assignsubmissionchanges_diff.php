@@ -28,11 +28,13 @@ defined('MOODLE_INTERNAL') || die;
 require_once(dirname(__FILE__) . '/definitions.php');
 
 /**
- * Class admin_setting_configcheckbox_diff
+ * Class admin_setting_configcheckbox_diff.
  * Simple helper to add a validation around the diff generation. Should ensures that diff can only be enables by
  * default if the changelog is enabled too.
  * Works in most cases, BUT: If the user has enabled both (changelog and diff) and disables the changelog, this code
  * will not be executed and no error becomes displayed. Nevertheless this validation can help is some cases.
+ * @copyright (c) 2017 Hendrik Wuerz
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class admin_setting_configcheckbox_assignsubmission_changes_diff extends admin_setting_configcheckbox {
 
@@ -56,7 +58,7 @@ class admin_setting_configcheckbox_assignsubmission_changes_diff extends admin_s
      */
     public function validate($data) {
         $changelog = get_config(ASSIGNSUBMISSION_CHANGES_NAME, 'default');
-        if ($changelog != '1' && $data == '1') { // The changelog is disabled and the diff should be enabled --> forbidden
+        if ($changelog != '1' && $data == '1') { // The changelog is disabled and the diff should be enabled --> forbidden.
             return get_string('diff_requires_changelog', ASSIGNSUBMISSION_CHANGES_NAME);
         }
         return true;

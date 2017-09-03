@@ -28,8 +28,17 @@ defined('MOODLE_INTERNAL') || die;
 require_once(dirname(__FILE__) . '/../definitions.php');
 require_once(dirname(__FILE__) . '/changelog.php');
 
+/**
+ * Class assign_submission_changes_observer
+ * @copyright (c) 2017 Hendrik Wuerz
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class assign_submission_changes_observer {
 
+    /**
+     * Detect changes in the updated submission.
+     * @param \core\event\base $event The update event of the submission.
+     */
     public static function submission_updated(\core\event\base $event) {
 
         // Check whether the admin has disabled the changelog.
@@ -80,17 +89,17 @@ class assign_submission_changes_observer {
 
         $update_detector = assign_submission_changes_changelog::get_update_detector($file, $user_id, $context_id);
         $predecessor = $update_detector->is_update();
-        if ($predecessor) { // A valid predecessor was found
+        if ($predecessor) { // A valid predecessor was found.
 
             $changelog_entry = $file->get_filename()
                 . get_string('is_an_update', ASSIGNSUBMISSION_CHANGES_NAME)
                 . $predecessor->get_filename();
 
-            // Check whether the diff is enabled for this submission
+            // Check whether the diff is enabled for this submission.
             $admin_allow_diff = get_config(ASSIGNSUBMISSION_CHANGES_NAME, 'allow_diff');
             $max_filesize_for_diff = get_config(ASSIGNSUBMISSION_CHANGES_NAME, 'max_filesize');
             if ($admin_allow_diff
-                && self::get_config($assignment, 'diff') == 1 // Diff must be enabled for this assignment
+                && self::get_config($assignment, 'diff') == 1 // Diff must be enabled for this assignment.
                 && $predecessor->get_filesize() <= $max_filesize_for_diff * 1024 * 1024
                 && $file->get_filesize() <= $max_filesize_for_diff * 1024 * 1024) {
 
@@ -146,7 +155,7 @@ class assign_submission_changes_observer {
             }
         }
 
-        // Delete auto generated text files
+        // Delete auto generated text files.
         if ($predecessor_txt_file) {
             unlink($predecessor_txt_file);
         }
@@ -172,11 +181,11 @@ class assign_submission_changes_observer {
 
     /**
      * Get the config with the passed name for the passed assignment.
-     * In the assignment settings each sub plugin can be configured (see locallib.php get_settings(...))
+     * In the assignment settings each sub plugin can be configured (see locallib.php get_settings(...)).
      * @param int $assignment The ID of the assignment whose settings should be fetched.
      * @param string $name The name of the config property which should be fetched.
-     *              Must be identically to the name in locallib.php get_settings(...)
-     * @return string The setting stored for the assignemt.
+     *              Must be identically to the name in locallib.php get_settings(...).
+     * @return string The setting stored for the assignment.
      */
     private static function get_config($assignment, $name) {
         global $DB;
