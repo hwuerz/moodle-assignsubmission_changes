@@ -281,7 +281,26 @@ class assign_submission_changes extends assign_submission_plugin {
             . userdate($change->timestamp)
             . ' (' . $this->time_elapsed_string('@'.$change->timestamp) . ')<br>'
             . $change->changes
+            . $this->generate_edit_link($change)
             . '</li>';
+    }
+
+    /**
+     * Generates a link to the edit page for this change if the current user is the author of this change (= has edit rights)
+     * @param stdClass $change The change for which a edit link should be generated.
+     * @return string The HTML code with the edit link or an empty string if the current user can not edit the text.
+     */
+    private function generate_edit_link($change) {
+        global $USER;
+
+        if ($USER->id == $change->author) { // The current user can edit the text.
+            $edit_url = new moodle_url('/mod/assign/submission/changes/edit.php', array('id' => $change->id));
+            return ' <a href="' . $edit_url . '">'
+                . '[' . get_string('edit_form_link', ASSIGNSUBMISSION_CHANGES_NAME) . ']'
+                . '</a>';
+        }
+
+        return ''; // The current user can not edit the text --> generate no link.
     }
 
     /**

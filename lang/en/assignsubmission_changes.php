@@ -51,6 +51,14 @@ $string['enabled_help'] = 'Enable the detection of changes.';
 $string['diff'] = 'Auto detect diff';
 $string['diff_help'] = 'Detect differences in student submissions';
 
+// Edit form.
+$string['edit_form_link'] = 'edit';
+$string['edit_form_headline'] = 'Edit the displayed changelog text for your submission on {$a}.';
+$string['edit_form_changes'] = 'Changelog entry';
+$string['edit_form_changes_help'] = 'Describe the changed parts in your submission.';
+$string['edit_form_error_empty'] = 'The changelog entry must not be empty.';
+$string['edit_form_error_too_long'] = 'You can not use more than {$a->max} chars as description text. You submitted {$a->used} chars.';
+
 // Outputs.
 $string['last_grading'] = 'The last grading was on ';
 $string['no_last_grading'] = 'There is no grading until now.';
