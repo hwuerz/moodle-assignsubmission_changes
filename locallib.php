@@ -56,7 +56,7 @@ class assign_submission_changes extends assign_submission_plugin {
     public function get_settings(MoodleQuickForm $mform) {
 
         $allow_changelog = get_config(ASSIGNSUBMISSION_CHANGES_NAME, 'allow_changelog');
-        $allow_diff = get_config(ASSIGNSUBMISSION_CHANGES_NAME, 'allow_diff');
+        $max_filesize_for_diff = get_config(ASSIGNSUBMISSION_CHANGES_NAME, 'max_filesize');
 
         $default_diff = $this->get_config('diff');
 
@@ -66,7 +66,7 @@ class assign_submission_changes extends assign_submission_plugin {
         }
 
         // Display setting Diff.
-        if ($allow_changelog && $allow_diff) {
+        if ($allow_changelog && $max_filesize_for_diff > 0) {
             $name = get_string('diff', ASSIGNSUBMISSION_CHANGES_NAME);
             $mform->addElement('checkbox', 'assignsubmission_changes_diff', $name, '', 0);
             $mform->setDefault('assignsubmission_changes_diff', $default_diff);

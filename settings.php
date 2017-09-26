@@ -36,11 +36,11 @@ $settings->add(new admin_setting_configcheckbox(
     new lang_string('allow_changelog_help', ASSIGNSUBMISSION_CHANGES_NAME),
     1));
 
-$settings->add(new admin_setting_configcheckbox(
-    ASSIGNSUBMISSION_CHANGES_NAME . '/allow_diff',
-    new lang_string('allow_diff', ASSIGNSUBMISSION_CHANGES_NAME),
-    new lang_string('allow_diff_help', ASSIGNSUBMISSION_CHANGES_NAME),
-    1));
+$settings->add(new admin_setting_configtext(
+    ASSIGNSUBMISSION_CHANGES_NAME . '/max_filesize',
+    new lang_string('max_filesize', ASSIGNSUBMISSION_CHANGES_NAME),
+    new lang_string('max_filesize_help', ASSIGNSUBMISSION_CHANGES_NAME),
+    20, PARAM_INT));
 
 $settings->add(new admin_setting_configcheckbox(
     ASSIGNSUBMISSION_CHANGES_NAME . '/default',
@@ -60,9 +60,3 @@ if (!local_changeloglib_pdftotext::is_installed()) {
         "Warning",
         new lang_string('diff_not_available', ASSIGNSUBMISSION_CHANGES_NAME)));
 }
-
-$settings->add(new admin_setting_configtext(
-    ASSIGNSUBMISSION_CHANGES_NAME . '/max_filesize',
-    new lang_string('max_filesize', ASSIGNSUBMISSION_CHANGES_NAME),
-    new lang_string('max_filesize_help', ASSIGNSUBMISSION_CHANGES_NAME),
-    20, PARAM_INT));

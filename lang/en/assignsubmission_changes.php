@@ -39,10 +39,8 @@ $string['admin_diff_help'] = 'If set, the generation of the differences between 
 $string['diff_requires_changelog'] = 'You must enable the changelog for the diff generation';
 $string['allow_changelog'] = 'Allow detection of changes in student submissions';
 $string['allow_changelog_help'] = 'If set, a changelog with all updates of the submission can be generated. You can set this option in the submission settings. If this option is deactivated, a changelog can not be generated.';
-$string['allow_diff'] = 'Allow detection of differences in student submissions';
-$string['allow_diff_help'] = 'If set, the changelog can contain detailed information about the changes. You can set this option in the submission settings. If this option is deactivated, a difference between files can not be generated.<br>This functionality requires the activation of the changelog.';
 $string['max_filesize'] = 'Max filesize in MB for diff detection';
-$string['max_filesize_help'] = 'The maximum filesize of the submission where differences to a predecessor will be detected. A higher value can impact the server response time and workload.';
+$string['max_filesize_help'] = 'The maximum filesize of the submission where differences to a predecessor will be detected. A higher value can impact the server response time and workload. Set this value to zero to disable the diff detection.';
 $string['diff_not_available'] = '<p>The detection for changes in PDF files is not available because the package <code>poppler-utils</code> is not installed on your system. If you have enabled the setting above, ask your server admin to run <code>apt-get install poppler-utils</code> and visit this page again. This message disappears if the tool is installed correctly.</p>';
 
 // Assignment Settings.
@@ -72,4 +70,4 @@ $string['no_ungraded_changes'] = 'No ungraded changes';
 $string['diff_prefix'] = 'The following pages of the new file were changed: ';
 $string['long_diff'] = '{$a} pages were changed';
 $string['is_an_update'] = ' is an update of ';
-$string['was_uploaded'] = ' was uploaded';
+$string['replaces'] = ' replaces ';

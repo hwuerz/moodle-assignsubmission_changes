@@ -96,9 +96,8 @@ class assign_submission_changes_observer {
                 . $predecessor->get_filename();
 
             // Check whether the diff is enabled for this submission.
-            $admin_allow_diff = get_config(ASSIGNSUBMISSION_CHANGES_NAME, 'allow_diff');
             $max_filesize_for_diff = get_config(ASSIGNSUBMISSION_CHANGES_NAME, 'max_filesize');
-            if ($admin_allow_diff
+            if ($max_filesize_for_diff > 0 // Only for performance --> Avoid the next checks.
                 && self::get_config($assignment, 'diff') == 1 // Diff must be enabled for this assignment.
                 && $predecessor->get_filesize() <= $max_filesize_for_diff * 1024 * 1024
                 && $file->get_filesize() <= $max_filesize_for_diff * 1024 * 1024) {
@@ -110,7 +109,8 @@ class assign_submission_changes_observer {
 
                 } else { // There are to many diffs. The predecessor can not be valid.
                     $changelog_entry = $file->get_filename()
-                        . get_string('was_uploaded', ASSIGNSUBMISSION_CHANGES_NAME);
+                        . get_string('replaces', ASSIGNSUBMISSION_CHANGES_NAME)
+                        . $predecessor->get_filename();
                 }
             }
 
