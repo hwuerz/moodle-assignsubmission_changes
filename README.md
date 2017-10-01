@@ -32,10 +32,10 @@ Installation
 --------
 
 1. Install the dependency [local_changeloglib](https://github.com/hwuerz/moodle-local_changeloglib) with the required command line tools (See readme.md in the changeloglib repository.)
-2. Clone the repo inside MOODLE_HOME/local/uploadnotification
+2. Clone the repo inside MOODLE_HOME/mod/assign/submission/changes
    ```bash
    cd path/to/moodle/home
-   git clone git@github.com:hwuerz/moodle-assignsubmission_changes.git mod/assign/submission/changes
+   git clone https://github.com/hwuerz/moodle-assignsubmission_changes.git mod/assign/submission/changes
    ```
 3. Browse to Site Administration -> Notifications and allow the database upgrades to execute
 4. After installation define your admin settings to customize the plugin behaviour.
