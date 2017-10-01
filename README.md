@@ -38,7 +38,7 @@ Installation
    git clone https://github.com/hwuerz/moodle-assignsubmission_changes.git mod/assign/submission/changes
    ```
 3. Browse to Site Administration -> Notifications and allow the database upgrades to execute
-4. After installation define your admin settings to customize the plugin behaviour.
+4. After installation define your admin settings to customize the plugin behaviour. See the chapter *Features* of this document for more information.
 
 Tests
 ------

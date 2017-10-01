@@ -60,6 +60,10 @@ $form = new assign_submission_changes_edit_form(null, array(
     'cm' => $cm
 ));
 
+$assign_url = new moodle_url('/mod/assign/view.php', array('id' => $cm->id));
+if ($form->is_cancelled()) {
+    redirect($assign_url); // Cancel --> redirect to the submission without saving.
+}
 // Evaluate form data if something was submitted already.
 $data = $form->get_data();
 if ($data) {
@@ -67,7 +71,6 @@ if ($data) {
         'id' => $change_id,
         'changes' => $data->changes['text']
     ));
-    $assign_url = new moodle_url('/mod/assign/view.php', array('id' => $cm->id));
     redirect($assign_url); // After changing the text --> redirect to the submission.
 }
 
