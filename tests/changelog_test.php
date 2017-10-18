@@ -32,19 +32,45 @@ require_once($CFG->dirroot . '/mod/assign/tests/base_test.php');
 
 /**
  * Class assign_submission_changes_changelog_test.
+ *
  * vendor/bin/phpunit assign_submission_changes_changelog_test mod/assign/submission/changes/tests/changelog_test.php
  *
  * Tests changelog generation.
  *
+ * @copyright (c) 2017 Hendrik Wuerz
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  * @group assignsubmission_changes
  */
 class assign_submission_changes_changelog_test extends advanced_testcase {
 
+    /**
+     * @var stdClass The course used for tests.
+     */
     private $course;
+
+    /**
+     * @var stdClass The student used for tests.
+     */
     private $student;
+
+    /**
+     * @var testable_assign The assignment used for tests.
+     */
     private $assign;
+
+    /**
+     * @var mixed The 'file' plugin of submissions.
+     */
     private $file_plugin;
+
+    /**
+     * @var mixed The 'changes' plugin of submissions (this one).
+     */
     private $changes_plugin;
+
+    /**
+     * @var stdClass The submission of the user.
+     */
     private $submission;
 
     /**

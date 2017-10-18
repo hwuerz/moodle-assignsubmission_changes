@@ -51,7 +51,7 @@ This plugin provides tests for the main features. To run them please follow the 
     ```bash
     cd /path/to/moodle/home
     php admin/tool/phpunit/cli/init.php
-    vendor/bin/phpunit --group local_uploadnotification
+    vendor/bin/phpunit --group assignsubmission_changes
     ``` 
 
 Features
