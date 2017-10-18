@@ -36,10 +36,10 @@ $plugin->dependencies = array(
 );
 
 
-$plugin->release = '0.2.0';
+$plugin->release = '0.2.1';
 $plugin->maturity = MATURITY_ALPHA;
 $plugin->cron = 1;
 
 // Version format:  YYYYMMDDXX .
-$plugin->version = 2017092601;
+$plugin->version = 2017101800;
 $plugin->requires = 2017051500;
