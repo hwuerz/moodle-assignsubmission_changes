@@ -69,5 +69,7 @@ $string['ungraded_changes'] = 'There are ungraded changes';
 $string['no_ungraded_changes'] = 'No ungraded changes';
 $string['diff_prefix'] = 'The following pages of the new file were changed: ';
 $string['long_diff'] = '{$a} pages were changed';
+$string['was_added'] = ' was added';
+$string['was_deleted'] = ' was deleted';
 $string['is_an_update'] = ' is an update of ';
 $string['replaces'] = ' replaces ';

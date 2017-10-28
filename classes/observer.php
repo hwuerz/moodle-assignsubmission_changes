@@ -71,7 +71,14 @@ class assign_submission_changes_observer {
 
         // Delete all previous backup files.
         // Until now only the current upload is relevant as predecessors for further uploads.
-        assign_submission_changes_changelog::delete_previous_backups($context_id, $user_id);
+        $deleted_backups = assign_submission_changes_changelog::delete_previous_backups($context_id, $user_id);
+
+        // All backups which are not used until now are deleted files --> Add them to the changelog.
+        foreach ($deleted_backups as $file) {
+            $changelog_entry = $file->get_filename()
+                . get_string('was_deleted', ASSIGNSUBMISSION_CHANGES_NAME);
+            self::store_changelog($submission_id, $user_id, $changelog_entry);
+        }
     }
 
     /**
@@ -85,11 +92,19 @@ class assign_submission_changes_observer {
      * @param int $submission_id The submission under which the file is stored.
      */
     private static function generate_changelog($file, $user_id, $context_id, $assignment, $submission_id) {
-        global $DB;
 
+        // The changelog which will be generated for this file.
+        $changelog_entry = false;
+
+        // Setup predecessor detection.
         $update_detector = assign_submission_changes_changelog::get_update_detector($file, $user_id, $context_id);
         $predecessor = $update_detector->is_update();
-        if ($predecessor) { // A valid predecessor was found.
+
+        if ($predecessor === false) { // No predecessor found --> New file.
+            $changelog_entry = $file->get_filename()
+                . get_string('was_added', ASSIGNSUBMISSION_CHANGES_NAME);
+
+        } else if ($predecessor instanceof stored_file) { // A valid predecessor was found.
 
             $changelog_entry = $file->get_filename()
                 . get_string('is_an_update', ASSIGNSUBMISSION_CHANGES_NAME)
@@ -107,21 +122,38 @@ class assign_submission_changes_observer {
                 if ($diff !== false) { // After diff generation the predecessor was not rejected.
                     $changelog_entry .= $diff;
 
-                } else { // There are to many diffs. The predecessor can not be valid.
+                } else { // There are to many diffs. The predecessor is not an update.
                     $changelog_entry = $file->get_filename()
                         . get_string('replaces', ASSIGNSUBMISSION_CHANGES_NAME)
                         . $predecessor->get_filename();
                 }
             }
-
-            $DB->insert_record('assignsubmission_changes', (object) array(
-                'submission' => $submission_id,
-                'author' => $user_id,
-                'changes' => $changelog_entry,
-                'timestamp' => time()
-            ));
-
         }
+
+        // This backup was used --> Do not use it again for another file.
+        $update_detector->delete_found_predecessor();
+
+        // Insert the changelog in the database if it was generated.
+        if ($changelog_entry !== false) {
+            self::store_changelog($submission_id, $user_id, $changelog_entry);
+        }
+    }
+
+    /**
+     * Stores the passed changelog in the database.
+     * @param int $submission_id The ID of the submission.
+     * @param int $user_id The ID of the user who performed the update.
+     * @param string $changelog_entry The changelog string.
+     */
+    private static function store_changelog($submission_id, $user_id, $changelog_entry) {
+        global $DB;
+        $DB->insert_record('assignsubmission_changes', (object) array(
+            'submission' => $submission_id,
+            'author' => $user_id,
+            'changes' => $changelog_entry,
+            'timestamp' => time()
+        ));
+
     }
 
     /**

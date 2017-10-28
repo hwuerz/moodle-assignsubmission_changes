@@ -92,6 +92,6 @@ class assign_submission_changes_changelog {
      * @param int $user_id The user whose backups in the above context should be deleted.
      */
     public static function delete_previous_backups($context, $user_id) {
-        local_changeloglib_backup_lib::clean_up_selected($context, $user_id);
+        return local_changeloglib_backup_lib::clean_up_selected($context, $user_id);
     }
 }
