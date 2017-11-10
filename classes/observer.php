@@ -64,10 +64,8 @@ class assign_submission_changes_observer {
             'sortorder DESC, id ASC',
             false);
 
-        // Iterate all files. A submission can have multiple uploads.
-        foreach ($area_files as $file) {
-            self::generate_changelog($file, $user_id, $context_id, $assignment, $submission_id);
-        }
+        // A submission can have multiple uploads. Find predecessors for all of them.
+        self::generate_changelog($area_files, $user_id, $context_id, $assignment, $submission_id);
 
         // Delete all previous backup files.
         // Until now only the current upload is relevant as predecessors for further uploads.
@@ -85,57 +83,68 @@ class assign_submission_changes_observer {
      * Checks whether the passed file is an update.
      * Generates a changelog if a predecessor was found and stores it in the database.
      * The changelog includes the differences of the files, if this function is activated.
-     * @param stored_file $file The file which should be checked as an update.
+     * @param stored_file[] $files The files which should be checked as an update.
      * @param int $user_id The user who owns the file and has submitted the assignment.
      * @param int $context_id The context of this submission.
      * @param int $assignment The assignment ID corresponding to this submission.
      * @param int $submission_id The submission under which the file is stored.
      */
-    private static function generate_changelog($file, $user_id, $context_id, $assignment, $submission_id) {
-
-        // The changelog which will be generated for this file.
-        $changelog_entry = false;
+    private static function generate_changelog($files, $user_id, $context_id, $assignment, $submission_id) {
 
         // Setup predecessor detection.
-        $update_detector = assign_submission_changes_changelog::get_update_detector($file, $user_id, $context_id);
-        $predecessor = $update_detector->is_update();
+        $update_detector = assign_submission_changes_changelog::get_update_detector($files, $user_id, $context_id);
+        $distribution = $update_detector->map_backups();
 
-        if ($predecessor === false) { // No predecessor found --> New file.
-            $changelog_entry = $file->get_filename()
-                . get_string('was_added', ASSIGNSUBMISSION_CHANGES_NAME);
+        // Loop all mappings of new files to backups.
+        foreach ($distribution->mappings as $mapping) {
 
-        } else if ($predecessor instanceof stored_file) { // A valid predecessor was found.
+            // The changelog which will be generated for this file.
+            $changelog_entry = false;
 
-            $changelog_entry = $file->get_filename()
-                . get_string('is_an_update', ASSIGNSUBMISSION_CHANGES_NAME)
-                . $predecessor->get_filename();
+            // The new file (the successor).
+            $file = $mapping->file_wrapper->get_file();
 
-            // Check whether the diff is enabled for this submission.
-            $max_filesize_for_diff = get_config(ASSIGNSUBMISSION_CHANGES_NAME, 'max_filesize');
-            if ($max_filesize_for_diff > 0 // Only for performance --> Avoid the next checks.
-                && self::get_config($assignment, 'diff') == 1 // Diff must be enabled for this assignment.
-                && $predecessor->get_filesize() <= $max_filesize_for_diff * 1024 * 1024
-                && $file->get_filesize() <= $max_filesize_for_diff * 1024 * 1024) {
+            if ($mapping->predecessor === null) { // No predecessor found --> New file.
+                $changelog_entry = $file->get_filename()
+                    . get_string('was_added', ASSIGNSUBMISSION_CHANGES_NAME);
 
-                $diff = self::generate_diff($predecessor, $file);
+            } else if ($mapping->predecessor->get_backup()->get_file() instanceof stored_file) { // A valid predecessor was found.
 
-                if ($diff !== false) { // After diff generation the predecessor was not rejected.
-                    $changelog_entry .= $diff;
+                // The stored_file instance of the predecessor.
+                $predecessor = $mapping->predecessor->get_backup()->get_file();
 
-                } else { // There are to many diffs. The predecessor is not an update.
-                    $changelog_entry = $file->get_filename()
-                        . get_string('replaces', ASSIGNSUBMISSION_CHANGES_NAME)
-                        . $predecessor->get_filename();
+                // Add the predecessor filename to the changelog.
+                $changelog_entry = $file->get_filename()
+                    . get_string('is_an_update', ASSIGNSUBMISSION_CHANGES_NAME)
+                    . $predecessor->get_filename();
+
+                // Check whether the diff is enabled for this submission.
+                $max_filesize_for_diff = get_config(ASSIGNSUBMISSION_CHANGES_NAME, 'max_filesize');
+                if ($max_filesize_for_diff > 0 // Only for performance --> Avoid the next checks.
+                    && self::get_config($assignment, 'diff') == 1 // Diff must be enabled for this assignment.
+                    && $predecessor->get_filesize() <= $max_filesize_for_diff * 1024 * 1024
+                    && $file->get_filesize() <= $max_filesize_for_diff * 1024 * 1024) {
+
+                    $diff = self::generate_diff($predecessor, $file);
+
+                    if ($diff !== false) { // After diff generation the predecessor was not rejected.
+                        $changelog_entry .= $diff;
+
+                    } else { // There are to many diffs. The predecessor is not an update.
+                        $changelog_entry = $file->get_filename()
+                            . get_string('replaces', ASSIGNSUBMISSION_CHANGES_NAME)
+                            . $predecessor->get_filename();
+                    }
                 }
             }
-        }
 
-        // This backup was used --> Do not use it again for another file.
-        $update_detector->delete_found_predecessor();
+            // This backup was used --> Do not use it again for another file.
+            $mapping->delete_found_predecessor();
 
-        // Insert the changelog in the database if it was generated.
-        if ($changelog_entry !== false) {
-            self::store_changelog($submission_id, $user_id, $changelog_entry);
+            // Insert the changelog in the database if it was generated.
+            if ($changelog_entry !== false) {
+                self::store_changelog($submission_id, $user_id, $changelog_entry);
+            }
         }
     }
 
