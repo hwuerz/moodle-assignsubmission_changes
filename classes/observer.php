@@ -123,7 +123,9 @@ class assign_submission_changes_observer {
                 if ($max_filesize_for_diff > 0 // Only for performance --> Avoid the next checks.
                     && self::get_config($assignment, 'diff') == 1 // Diff must be enabled for this assignment.
                     && $predecessor->get_filesize() <= $max_filesize_for_diff * 1024 * 1024
-                    && $file->get_filesize() <= $max_filesize_for_diff * 1024 * 1024) {
+                    && $file->get_filesize() <= $max_filesize_for_diff * 1024 * 1024
+                    && local_changeloglib_pdftotext::is_installed()
+                    && local_changeloglib_diff_detector::is_command_line_diff_installed()) {
 
                     $diff = self::generate_diff($predecessor, $file);
 
