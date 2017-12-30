@@ -108,7 +108,8 @@ class assign_submission_changes_observer {
                 $changelog_entry = $file->get_filename()
                     . get_string('was_added', ASSIGNSUBMISSION_CHANGES_NAME);
 
-            } else if ($mapping->predecessor->get_backup()->get_file() instanceof stored_file) { // A valid predecessor was found.
+            } else if ($mapping->predecessor->get_backup()->get_file() instanceof stored_file
+                && $mapping->has_changed()) { // A valid predecessor was found.
 
                 // The stored_file instance of the predecessor.
                 $predecessor = $mapping->predecessor->get_backup()->get_file();
