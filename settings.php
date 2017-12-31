@@ -28,6 +28,7 @@ defined('MOODLE_INTERNAL') || die;
 require_once(dirname(__FILE__) . '/definitions.php');
 require_once(dirname(__FILE__) . '/configcheckbox_assignsubmissionchanges_diff.php');
 require_once(dirname(__FILE__) . '/../../../../local/changeloglib/classes/pdftotext.php');
+require_once(dirname(__FILE__) . '/../../../../local/changeloglib/classes/diff_detector.php');
 
 
 $settings->add(new admin_setting_configcheckbox(
@@ -56,7 +57,14 @@ $settings->add(new admin_setting_configcheckbox_assignsubmission_changes_diff(
 
 if (!local_changeloglib_pdftotext::is_installed()) {
     $settings->add(new admin_setting_heading(
+        ASSIGNSUBMISSION_CHANGES_NAME . '/pdftotext_not_available',
+        new lang_string('warning', ASSIGNSUBMISSION_CHANGES_NAME),
+        new lang_string('pdftotext_not_available', ASSIGNSUBMISSION_CHANGES_NAME)));
+}
+
+if (!local_changeloglib_diff_detector::is_command_line_diff_installed()) {
+    $settings->add(new admin_setting_heading(
         ASSIGNSUBMISSION_CHANGES_NAME . '/diff_not_available',
-        "Warning",
+        new lang_string('warning', ASSIGNSUBMISSION_CHANGES_NAME),
         new lang_string('diff_not_available', ASSIGNSUBMISSION_CHANGES_NAME)));
 }

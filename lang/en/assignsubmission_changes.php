@@ -34,6 +34,7 @@ $string['pluginname_desc'] = 'AssignSubmission Changes';
 // Admin settings.
 $string['default'] = 'Enable Changelog by default';
 $string['default_help'] = 'If set, the changelog will be enabled by default for all new assignments.';
+$string['warning'] = 'Warning';
 $string['admin_diff'] = 'Enable Difference Detection by default';
 $string['admin_diff_help'] = 'If set, the generation of the differences between the uploades will be enabled by default for all new assignments.<br>Diff generation requires the changelog generation.';
 $string['diff_requires_changelog'] = 'You must enable the changelog for the diff generation';
@@ -41,7 +42,8 @@ $string['allow_changelog'] = 'Allow detection of changes in student submissions'
 $string['allow_changelog_help'] = 'If set, a changelog with all updates of the submission can be generated. You can set this option in the submission settings. If this option is deactivated, a changelog can not be generated.';
 $string['max_filesize'] = 'Max filesize in MB for diff detection';
 $string['max_filesize_help'] = 'The maximum filesize of the submission where differences to a predecessor will be detected. A higher value can impact the server response time and workload. Set this value to zero to disable the diff detection.';
-$string['diff_not_available'] = '<p>The detection for changes in PDF files is not available because the package <code>poppler-utils</code> is not installed on your system. If you have enabled the setting above, ask your server admin to run <code>apt-get install poppler-utils</code> and visit this page again. This message disappears if the tool is installed correctly.</p>';
+$string['pdftotext_not_available'] = '<p>The detection for changes in PDF files is not available because the tool <code>pdftotext</code> could not be found on your system. If you have enabled the setting above, have a look in the admin settings of the local Plugin ChangelogLib to specify the correct path. This message disappears if the tool could be found.</p>';
+$string['diff_not_available'] = '<p>The detection for changes in PDF files is not available because the tool <code>diff</code> could not be found on your system. If you have enabled the setting above, have a look in the admin settings of the local Plugin ChangelogLib to specify the correct path. This message disappears if the tool could be found.</p>';
 
 // Assignment Settings.
 $string['enabled'] = 'Changelog';
@@ -69,5 +71,7 @@ $string['ungraded_changes'] = 'There are ungraded changes';
 $string['no_ungraded_changes'] = 'No ungraded changes';
 $string['diff_prefix'] = 'The following pages of the new file were changed: ';
 $string['long_diff'] = '{$a} pages were changed';
+$string['was_added'] = ' was added';
+$string['was_deleted'] = ' was deleted';
 $string['is_an_update'] = ' is an update of ';
 $string['replaces'] = ' replaces ';

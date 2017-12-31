@@ -25,7 +25,7 @@ License
 Requirements
 ------------
 
-* Tested with Moodle 3.3+
+* Tested with Moodle 3.4+
 * Requires the plugin `local_changeloglib` [https://github.com/hwuerz/moodle-local_changeloglib](https://github.com/hwuerz/moodle-local_changeloglib) which depends on the command line tools [poppler-utils](https://wiki.ubuntuusers.de/poppler-utils/) and [diff](https://wiki.ubuntuusers.de/diff/)
 
 Installation
@@ -64,10 +64,10 @@ The features have to be enabled by the moodle administrator and a teacher must a
 As a **moodle administrator** you can control whether the functionality should be available in your installation.
 1. Go to `Site administration` -> `Plugins` -> `Activity modules` -> `Assignment` -> `Submission plugins` -> `Changes`
 2. Set `Allow detection of changes in student submissions` to true if you want to enable the functionality in your installation. If this value is unchecked, no options will be displayed in assignments and no changelog is generated.
-3. Set `Max filesize in MB for diff detection` to 20. This will allow the analysis of changed pages in PDF documents up to 20MB. If you set this value to zero, teachers can not enable the detection of differences in assignments. The feature requires the command line tools [poppler-utils](https://wiki.ubuntuusers.de/poppler-utils/) and [diff](https://wiki.ubuntuusers.de/diff/) as described in the [changeloglib Plugin](https://github.com/hwuerz/moodle-local_changeloglib)
+3. Set `Max filesize in MB for diff detection` to 20. This will allow the analysis of changed pages in PDF documents up to 20MB. If you set this value to zero, teachers can not enable the detection of differences in assignments. The feature requires the command line tools [poppler-utils](https://wiki.ubuntuusers.de/poppler-utils/) and [diff](https://wiki.ubuntuusers.de/diff/) as described in the [changeloglib Plugin](https://moodle.org/plugins/local_changeloglib)
 4. Set `Enable Changelog by default` and `Enable Difference Detection by default` to true if you want to enable the changelog and the detection of changed pages in new assignments by default.
 
-<img src="https://user-images.githubusercontent.com/9339300/31033671-46b5eaec-a561-11e7-8b2a-984eabef3eb3.png" width="400">
+<img src="https://user-images.githubusercontent.com/9339300/34462711-30899f5c-ee4a-11e7-84dc-410127a03af4.png" width="400">
 
 As a **teacher** you can activate the generation of a changelog and the detection of changed pages for an assignment in your course if the moodle admin has allowed it.
 1. Go to `Edit settings` of an assignment or create a new one.

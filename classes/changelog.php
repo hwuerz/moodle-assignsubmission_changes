@@ -40,22 +40,24 @@ class assign_submission_changes_changelog {
     /**
      * Provides an update detector for the passed submission file data.
      * Wrapper around changeloglib plugin to be used for submissions.
-     * @param stored_file $file The file of which a predecessor should be found.
+     * @param stored_file[] $files The files of which a predecessor should be found.
      * @param int $user_id The user ID whoes submissions should be checked.
      * @param int $context_id The context of the submission.
      * @return local_changeloglib_update_detector The update detector.
      */
-    public static function get_update_detector($file, $user_id, $context_id) {
+    public static function get_update_detector($files, $user_id, $context_id) {
 
-        $new_file = $file;
-        $new_data = array();
+        $new_files = array();
+        foreach ($files as $file) {
+            array_push($new_files, new local_changeloglib_new_file_wrapper($file, array()));
+        }
         $context = $context_id;
         $scope = $user_id;
         $further_candidates = array();
 
-        $detector = new local_changeloglib_update_detector($new_file, $new_data, $context, $scope, $further_candidates);
+        $detector = new local_changeloglib_update_detector($new_files, $context, $scope, $further_candidates);
         $detector->set_ensure_mime_type(false);
-        // Get the predecessor even if is is completely different. This is needed to have a full changelog.
+        // Get the predecessor even if it is completely different. This is needed to have a full changelog.
         $detector->set_min_similarity(0);
 
         return $detector;
@@ -92,6 +94,6 @@ class assign_submission_changes_changelog {
      * @param int $user_id The user whose backups in the above context should be deleted.
      */
     public static function delete_previous_backups($context, $user_id) {
-        local_changeloglib_backup_lib::clean_up_selected($context, $user_id);
+        return local_changeloglib_backup_lib::clean_up_selected($context, $user_id);
     }
 }
