@@ -60,7 +60,7 @@ $string['edit_form_error_empty'] = 'The changelog entry must not be empty.';
 $string['edit_form_error_too_long'] = 'You can not use more than {$a->max} chars as description text. You submitted {$a->used} chars.';
 
 // Outputs.
-$string['last_grading'] = 'The last grading was on ';
+$string['last_grading'] = 'The last grading was on';
 $string['no_last_grading'] = 'There is no grading until now.';
 $string['no_changes'] = 'There are no detected changes.';
 $string['new_changes_prefix'] = 'The following changes were performed by the user after the last grading';
@@ -69,9 +69,9 @@ $string['old_changes_prefix'] = 'The following changes were performed by the use
 $string['no_old_changes'] = 'The student has not submitted any changes before the last grading';
 $string['ungraded_changes'] = 'There are ungraded changes';
 $string['no_ungraded_changes'] = 'No ungraded changes';
-$string['diff_prefix'] = 'The following pages of the new file were changed: ';
+$string['diff_prefix'] = 'The following pages of the new file were changed:';
 $string['long_diff'] = '{$a} pages were changed';
-$string['was_added'] = ' was added';
-$string['was_deleted'] = ' was deleted';
-$string['is_an_update'] = ' is an update of ';
-$string['replaces'] = ' replaces ';
+$string['was_added'] = 'was added';
+$string['was_deleted'] = 'was deleted';
+$string['is_an_update'] = 'is an update of';
+$string['replaces'] = 'replaces';

@@ -74,6 +74,7 @@ class assign_submission_changes_observer {
         // All backups which are not used until now are deleted files --> Add them to the changelog.
         foreach ($deleted_backups as $file) {
             $changelog_entry = $file->get_filename()
+                . ' '
                 . get_string('was_deleted', ASSIGNSUBMISSION_CHANGES_NAME);
             self::store_changelog($submission_id, $user_id, $changelog_entry);
         }
@@ -106,6 +107,7 @@ class assign_submission_changes_observer {
 
             if ($mapping->predecessor === null) { // No predecessor found --> New file.
                 $changelog_entry = $file->get_filename()
+                    . ' '
                     . get_string('was_added', ASSIGNSUBMISSION_CHANGES_NAME);
 
             } else if ($mapping->predecessor->get_backup()->get_file() instanceof stored_file
@@ -116,7 +118,9 @@ class assign_submission_changes_observer {
 
                 // Add the predecessor filename to the changelog.
                 $changelog_entry = $file->get_filename()
+                    . ' '
                     . get_string('is_an_update', ASSIGNSUBMISSION_CHANGES_NAME)
+                    . ' '
                     . $predecessor->get_filename();
 
                 // Check whether the diff is enabled for this submission.
@@ -135,7 +139,9 @@ class assign_submission_changes_observer {
 
                     } else { // There are to many diffs. The predecessor is not an update.
                         $changelog_entry = $file->get_filename()
+                            . ' '
                             . get_string('replaces', ASSIGNSUBMISSION_CHANGES_NAME)
+                            . ' '
                             . $predecessor->get_filename();
                     }
                 }
@@ -192,6 +198,7 @@ class assign_submission_changes_observer {
                 } else {
                     $diff_output .= '<br>'
                         . get_string('diff_prefix', ASSIGNSUBMISSION_CHANGES_NAME)
+                        . ' '
                         . $diff;
                 }
             } else {

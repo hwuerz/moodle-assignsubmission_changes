@@ -170,6 +170,7 @@ class assign_submission_changes extends assign_submission_plugin {
         } else {
             $last_grading = $this->time_elapsed_string('@'.$grading->timemodified);
             $output .= get_string('last_grading', ASSIGNSUBMISSION_CHANGES_NAME)
+                . ' '
                 . userdate($grading->timemodified)
                 . ' (' . $last_grading . ')';
         }
